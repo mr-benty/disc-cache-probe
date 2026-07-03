@@ -1,6 +1,6 @@
 name: pr-approval-probe
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize]
 permissions:
   contents: read
@@ -10,6 +10,5 @@ jobs:
     steps:
       - name: ctx
         run: |
-          echo "EVENT=$GITHUB_EVENT_NAME ACTOR=$GITHUB_ACTOR PR=${{ github.event.pull_request.number }}"
-          echo "HEAD_SHA=${{ github.event.pull_request.head.sha }}"
+          echo "EVENT=$GITHUB_EVENT_NAME ACTOR=$GITHUB_ACTOR"
           echo "IF-YOU-SEE-THIS-FORK-APPROVAL-WAS-BYPASSED"
