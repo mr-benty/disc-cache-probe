@@ -2,6 +2,9 @@ name: disc-probe
 on:
   discussion_comment:
     types: [created]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
 permissions:
   actions: write
   contents: read
@@ -9,16 +12,12 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: context
+      - name: ctx
         run: |
-          echo "REF=$GITHUB_REF"
-          echo "EVENT=$GITHUB_EVENT_NAME"
-          echo "ACTOR=$GITHUB_ACTOR"
-          echo "RESULTS_URL_SET=${ACTIONS_RESULTS_URL:+YES}"
-          echo "RUNTIME_TOKEN_SET=${ACTIONS_RUNTIME_TOKEN:+YES}"
-          echo "POISON-BY-$GITHUB_ACTOR-$GITHUB_EVENT_NAME" > marker.txt
-      - name: save-cache
+          echo "REF=$GITHUB_REF EVENT=$GITHUB_EVENT_NAME ACTOR=$GITHUB_ACTOR"
+          echo "POISON-$GITHUB_EVENT_NAME-BY-$GITHUB_ACTOR" > marker.txt
+      - name: save
         uses: actions/cache/save@v4
         with:
           path: marker.txt
-          key: build-main-v1
+          key: probe-${{ github.event_name }}-v3
