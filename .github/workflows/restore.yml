@@ -1,0 +1,16 @@
+name: restore-probe
+on: push
+permissions:
+  contents: read
+  actions: read
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: restore-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: marker.txt
+          key: build-main-v1
+      - name: show
+        run: cat marker.txt 2>/dev/null && echo "RESTORED-ABOVE" || echo "NO-CACHE-CLEAN"
