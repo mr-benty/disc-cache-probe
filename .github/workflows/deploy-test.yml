@@ -1,8 +1,13 @@
-name: deploy-test
+name: multi-env-deploy
 on: workflow_dispatch
 jobs:
-  deploy:
+  deploy-a:
     runs-on: ubuntu-latest
-    environment: bfla-test-env
+    environment: env-a
     steps:
-      - run: echo "DEPLOYED — if you see this, approval was granted"
+      - run: echo "deployed to env-a"
+  deploy-b:
+    runs-on: ubuntu-latest
+    environment: env-b
+    steps:
+      - run: echo "deployed to env-b"
